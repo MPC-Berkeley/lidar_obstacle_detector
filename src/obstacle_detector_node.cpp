@@ -96,12 +96,18 @@ ObstacleDetectorNode::ObstacleDetectorNode() : tf2_listener(tf2_buffer)
   std::string jsk_bboxes_topic;
   std::string autoware_objects_topic;
   
-  ROS_ASSERT(private_nh.getParam("lidar_points_topic", lidar_points_topic));
-  ROS_ASSERT(private_nh.getParam("cloud_ground_topic", cloud_ground_topic));
-  ROS_ASSERT(private_nh.getParam("cloud_clusters_topic", cloud_clusters_topic));
-  ROS_ASSERT(private_nh.getParam("jsk_bboxes_topic", jsk_bboxes_topic));
-  ROS_ASSERT(private_nh.getParam("autoware_objects_topic", autoware_objects_topic));
-  ROS_ASSERT(private_nh.getParam("bbox_target_frame", bbox_target_frame_));
+  // ROS_ASSERT(private_nh.getParam("lidar_points_topic", lidar_points_topic));
+  // ROS_ASSERT(private_nh.getParam("cloud_ground_topic", cloud_ground_topic));
+  // ROS_ASSERT(private_nh.getParam("cloud_clusters_topic", cloud_clusters_topic));
+  // ROS_ASSERT(private_nh.getParam("jsk_bboxes_topic", jsk_bboxes_topic));
+  // ROS_ASSERT(private_nh.getParam("autoware_objects_topic", autoware_objects_topic));
+  // ROS_ASSERT(private_nh.getParam("bbox_target_frame", bbox_target_frame_));
+  private_nh.getParam("lidar_points_topic", lidar_points_topic);
+  private_nh.getParam("cloud_ground_topic", cloud_ground_topic);
+  private_nh.getParam("cloud_clusters_topic", cloud_clusters_topic);
+  private_nh.getParam("jsk_bboxes_topic", jsk_bboxes_topic);
+  private_nh.getParam("autoware_objects_topic", autoware_objects_topic);
+  private_nh.getParam("bbox_target_frame", bbox_target_frame_);
 
   sub_lidar_points = nh.subscribe(lidar_points_topic, 1, &ObstacleDetectorNode::lidarPointsCallback, this);
   pub_cloud_ground = nh.advertise<sensor_msgs::PointCloud2>(cloud_ground_topic, 1);
