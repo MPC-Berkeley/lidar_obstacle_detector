@@ -38,7 +38,7 @@ class RectangleSafetyChecker(object):
         self.bbox_sub = rospy.Subscriber("/obstacle_detector/jsk_bboxes", BoundingBoxArray, self.bbox_cb, queue_size=10)
 
         self.region_pub = rospy.Publisher("/obstacle_detector/detect_region", PolygonStamped, queue_size=10)
-        self.safety_pub = rospy.Publisher("/obsatcle_detector/safety_flag", Bool, queue_size=10)
+        self.safety_pub = rospy.Publisher("/obstacle_detector/safety_flag", Bool, queue_size=10)
 
 
     def bbox_cb(self, data):
