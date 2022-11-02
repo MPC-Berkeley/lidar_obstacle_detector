@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find ouster_ros)/ouster.launch">
+  <arg name="use_sensors" default="true" doc="whether to use the onboard sensors or use rosbag"/>
+
+  <include if="$(arg use_sensors)" file="$(find ouster_ros)/ouster.launch">
     <arg name="sensor_hostname" value="192.168.50.13" />
     <arg name="metadata" value="/home/dev/.ros/lidar_metadata.json" />
   </include>
@@ -22,8 +24,8 @@
     <param name="x_min"        type="double"  value="-2.0"/>
     <param name="x_max"        type="double"  value="2.0"/>
     <param name="y_min"        type="double"  value="0.0"/>
-    <param name="y_max"        type="double"  value="4.0"/>
-    <param name="size_thres"   type="double"  value="0.5"/>
+    <param name="y_max"        type="double"  value="5.0"/>
+    <param name="size_thres"   type="double"  value="0.1"/>
     <param name="base_frame"   type="string"  value="os_lidar"/>
   </node>
 
@@ -37,6 +39,6 @@
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover.rviz" output="log" respawn="true" />
 
   <!-- Camera -->
-  <include file="$(find realsense2_camera)/launch/rs_camera.launch"/>
+  <include if="$(arg use_sensors)" file="$(find realsense2_camera)/launch/rs_camera.launch"/>
 
 </launch>
