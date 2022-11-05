@@ -4,6 +4,10 @@ import rospy
 from jsk_recognition_msgs.msg import BoundingBoxArray
 from std_msgs.msg import Bool
 from geometry_msgs.msg import PolygonStamped, Polygon, Point32
+from visualization_msgs.msg import Marker
+
+from dynamic_reconfigure.server import Server
+from lidar_obstacle_detector.cfg import safety_checker_Config
 
 class RectangleSafetyChecker(object):
     """
@@ -18,28 +22,37 @@ class RectangleSafetyChecker(object):
         rate = rospy.get_param('cmd_rate', 10)
         self.rate = rospy.Rate(rate) # 36hz
 
+        server = Server(safety_checker_Config, self.dynamic_reconfig_cb)
+    
         # X-Y are based on LiDAR coordinate system. Y is pointing towards the front of the vehicle, while X is pointing towards the cable
-        self.x_max = rospy.get_param('~x_max', 2)
-        self.x_min = rospy.get_param('~x_min', -2)
-        self.y_max = rospy.get_param('~y_max', 4)
-        self.y_min = rospy.get_param('~y_min', 0)
-        self.size_thres = rospy.get_param('~size_thres', 0.5)
+        self.x_max = 2
+        self.x_min = -2
+        self.y_max = 7
+        self.y_min = 0.2
+        self.size_thres = 0.1
         self.base_frame = rospy.get_param('~base_frame', 'os_lidar')
-
-        self.region = [
-            Point32(self.x_min, self.y_min, 0),
-            Point32(self.x_min, self.y_max, 0),
-            Point32(self.x_max, self.y_max, 0),
-            Point32(self.x_max, self.y_min, 0)
-        ]
 
         self.boundingbox_array = []
 
         self.bbox_sub = rospy.Subscriber("/obstacle_detector/jsk_bboxes", BoundingBoxArray, self.bbox_cb, queue_size=10)
 
+        self.marker_pub = rospy.Publisher("/obstacle_detector/marker", Marker, queue_size=10)
         self.region_pub = rospy.Publisher("/obstacle_detector/detect_region", PolygonStamped, queue_size=10)
         self.safety_pub = rospy.Publisher("/obstacle_detector/safety_flag", Bool, queue_size=10)
 
+    def dynamic_reconfig_cb(self, config, level):
+        """
+        callback for dynamic reconfigure
+        """
+        self.x_max = config["safety_region_xmax"]
+        self.x_min = config["safety_region_xmin"]
+
+        self.y_max = config["safety_region_ymax"]
+        self.y_min = config["safety_region_ymin"]
+
+        self.size_thres = config["obstalce_size_thres"]
+
+        return config
 
     def bbox_cb(self, data):
         """
@@ -62,7 +75,33 @@ class RectangleSafetyChecker(object):
                         is_safe = False
                         break
 
-            rospy.loginfo("Safety = %s" % is_safe)
+            # rospy.loginfo("Safety = %s" % is_safe)
+
+            self.region = [
+                Point32(self.x_min, self.y_min, 0),
+                Point32(self.x_min, self.y_max, 0),
+                Point32(self.x_max, self.y_max, 0),
+                Point32(self.x_max, self.y_min, 0)
+            ]
+
+            marker_msg = Marker()
+            marker_msg.header.frame_id = self.base_frame
+            marker_msg.type = marker_msg.ARROW
+            marker_msg.action = marker_msg.ADD
+            marker_msg.scale.x = 0.8
+            marker_msg.scale.y = 0.2
+            marker_msg.scale.z = 0.2
+            marker_msg.pose.orientation.z = 0.7071068
+            marker_msg.pose.orientation.w = 0.7071068
+            marker_msg.color.a = 1.0
+            if is_safe:
+                marker_msg.color.r = 0.0
+                marker_msg.color.g = 1.0
+                marker_msg.color.b = 0.0
+            else:
+                marker_msg.color.r = 1.0
+                marker_msg.color.g = 0.0
+                marker_msg.color.b = 0.0
 
             polygon_msg = PolygonStamped()
             polygon_msg.header.stamp = rospy.Time.now()
@@ -73,6 +112,7 @@ class RectangleSafetyChecker(object):
             safety_msg.data = is_safe
             self.safety_pub.publish(safety_msg)
             self.region_pub.publish(polygon_msg)
+            self.marker_pub.publish(marker_msg)
 
             self.rate.sleep()
 
