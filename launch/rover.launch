@@ -3,14 +3,15 @@
 
   <arg name="use_sensors" default="true" doc="whether to use the onboard sensors or use rosbag"/>
 
-  <include if="$(arg use_sensors)" file="$(find ouster_ros)/ouster.launch">
+  <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch">
     <arg name="sensor_hostname" value="192.168.50.13" />
     <arg name="metadata" value="/home/dev/.ros/lidar_metadata.json" />
+    <arg name="viz" value="false" />
   </include>
 
   <node name="obstacle_detector_node" pkg="lidar_obstacle_detector" type="obstacle_detector_node" output="screen">
     <!-- Input Topic Names -->
-    <param name="lidar_points_topic"      value="/os_cloud_node/points"/>
+    <param name="lidar_points_topic"      value="/ouster/points"/>
     <!-- Output Topic Names -->
     <param name="cloud_ground_topic"      value="obstacle_detector/cloud_ground"/>
     <param name="cloud_clusters_topic"    value="obstacle_detector/cloud_clusters"/>
