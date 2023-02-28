@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="use_sensors" default="true" doc="whether to use the onboard sensors or use rosbag"/>
+
+  <!-- Args to record rosbag -->
+  <arg name="record" default="false" />
+  <arg name="record_name" default="sensor_data" />
+
+  <!-- Front LiDAR -->
+  <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch" ns="front_lidar">
+    <arg name="sensor_hostname" value="192.168.50.13" />
+    <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
+    <arg name="metadata" value="/home/dev/.ros/front_lidar_metadata.json" />
+    <arg name="viz" value="false" />
+  </include>
+
+  <!-- Rear LiDAR -->
+  <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch" ns="rear_lidar">
+    <arg name="sensor_hostname" value="192.168.50.18" />
+    <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
+    <arg name="metadata" value="/home/dev/.ros/rear_lidar_metadata.json" />
+    <arg name="viz" value="false" />
+  </include>  
+
+  <!-- Rviz -->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover.rviz" output="log" respawn="true" />
+
+  <!-- Camera -->
+  <include if="$(arg use_sensors)" file="$(find realsense2_camera)/launch/rs_camera.launch"/>
+
+  <!-- Rosbag Recording -->
+  <node if="$(arg record)"  pkg="rosbag" type="record" name="rosbag_record_all"
+        args="record -a -o $(arg record_name)"/>
+
+</launch>

@@ -6,6 +6,7 @@
   <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch">
     <arg name="sensor_hostname" value="192.168.50.13" />
     <arg name="metadata" value="/home/dev/.ros/lidar_metadata.json" />
+    <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
     <arg name="viz" value="false" />
   </include>
 
