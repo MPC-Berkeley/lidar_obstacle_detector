@@ -24,7 +24,7 @@
   </include>  
 
   <!-- Rviz -->
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover.rviz" output="log" respawn="true" />
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover_one_lidar_stream_only.rviz" output="log" respawn="true" />
 
   <!-- Camera -->
   <include if="$(arg use_sensors)" file="$(find realsense2_camera)/launch/rs_camera.launch"/>
