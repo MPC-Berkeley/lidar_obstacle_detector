@@ -13,6 +13,7 @@
     <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
     <arg name="metadata" value="/home/dev/.ros/front_lidar_metadata.json" />
     <arg name="viz" value="false" />
+    <arg name="tf_prefix" value="front_lidar"/>
   </include>
 
   <!-- Rear LiDAR -->
@@ -21,6 +22,7 @@
     <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
     <arg name="metadata" value="/home/dev/.ros/rear_lidar_metadata.json" />
     <arg name="viz" value="false" />
+    <arg name="tf_prefix" value="rear_lidar"/>
   </include>  
 
   <!-- Rviz -->
