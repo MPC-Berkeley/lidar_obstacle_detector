@@ -3,27 +3,40 @@
 
   <arg name="use_sensors" default="true" doc="whether to use the onboard sensors or use rosbag"/>
 
+  <param name="use_sim_time" value="true" if="$(eval use_sensors == 'false')"/>
+
   <!-- Args to record rosbag -->
   <arg name="record" default="false" />
   <arg name="record_name" default="sensor_data" />
 
+  <!-- Rover State Transform -->
+  <!-- <node name="rover_state_node" pkg="polaris_interface" type="state_sub_node.py" /> -->
+
   <!-- Front LiDAR -->
-  <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch" ns="front_lidar">
-    <arg name="sensor_hostname" value="192.168.50.13" />
-    <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
-    <arg name="metadata" value="/home/dev/.ros/front_lidar_metadata.json" />
-    <arg name="viz" value="false" />
-    <arg name="tf_prefix" value="front_lidar"/>
-  </include>
+  <group ns="front_lidar">
+    <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch">
+      <arg name="sensor_hostname" value="192.168.50.13" />
+      <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
+      <arg name="metadata" value="/home/dev/.ros/front_lidar_metadata.json" />
+      <arg name="viz" value="false" />
+      <arg name="tf_prefix" value="$(arg ns)"/>
+    </include>
+    <node name="pointclouds_tf_node" pkg="lidar_obstacle_detector" type="pointclouds_tf_node" />
+  </group>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="front_lidar_tf" args="2 0 0 0 0 0 rover front_lidar/os_sensor" />
 
   <!-- Rear LiDAR -->
-  <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch" ns="rear_lidar">
-    <arg name="sensor_hostname" value="192.168.50.18" />
-    <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
-    <arg name="metadata" value="/home/dev/.ros/rear_lidar_metadata.json" />
-    <arg name="viz" value="false" />
-    <arg name="tf_prefix" value="rear_lidar"/>
-  </include>  
+  <group ns="rear_lidar">
+    <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch">
+      <arg name="sensor_hostname" value="192.168.50.18" />
+      <arg name="timestamp_mode" value="TIME_FROM_ROS_TIME" />
+      <arg name="metadata" value="/home/dev/.ros/rear_lidar_metadata.json" />
+      <arg name="viz" value="false" />
+      <arg name="tf_prefix" value="$(arg ns)"/>
+    </include>
+    <node name="pointclouds_tf_node" pkg="lidar_obstacle_detector" type="pointclouds_tf_node" />
+  </group>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="rear_lidar_tf" args="-2 0 0 0 0 0 rover rear_lidar/os_sensor" />
 
   <!-- Rviz -->
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover_one_lidar_stream_only.rviz" output="log" respawn="true" />
