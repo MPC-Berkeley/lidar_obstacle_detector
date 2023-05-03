@@ -14,9 +14,14 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   tf2_ros
   tf2_geometry_msgs
+  geometry_msgs
+  ros_numpy
   dynamic_reconfigure
   autoware_msgs
+  message_generation
   jsk_recognition_msgs
+  actionlib_msgs
+  visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,31 +58,39 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+   FILES
+   Obstacle.msg
+   Obstacles.msg
+   ObstacleRange.msg
+   ObstacleRanges.msg
+   LidarBBox.msg
+ )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
+#add_service_files(
+#  FILES
+#   ObstacleInfo.srv
 #   Service2.srv
-# )
+#)
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
+ add_action_files(
+   FILES
+   fusion2lidar.action
 #   Action1.action
 #   Action2.action
-# )
+ )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   actionlib_msgs
+   std_msgs
+   sensor_msgs
+   geometry_msgs
+   visualization_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -111,7 +124,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lidar_obstacle_detector
-  CATKIN_DEPENDS roscpp rospy std_msgs pcl_ros tf2_ros tf2_geometry_msgs dynamic_reconfigure autoware_msgs jsk_recognition_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs pcl_ros tf2_ros tf2_geometry_msgs dynamic_reconfigure autoware_msgs jsk_recognition_msgs actionlib_msgs visualization_msgs
   DEPENDS system_lib
 )
 
@@ -142,7 +155,6 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(obstacle_detector_node src/obstacle_detector_node.cpp)
-add_executable(pointclouds_tf_node src/pointclouds_tf_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -165,9 +177,6 @@ target_link_libraries(obstacle_detector_node
   ${catkin_LIBRARIES}
   ${${PROJECT_NAME}_LIBRARY}
   ${PROJECT_NAME}
-)
-target_link_libraries(pointclouds_tf_node
-  ${catkin_LIBRARIES}
 )
 
 #############
