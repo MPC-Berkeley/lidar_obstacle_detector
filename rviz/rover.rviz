@@ -13,6 +13,7 @@ Panels:
         - /MarkerArray1
         - /Marker1
         - /Marker2
+        - /Marker3
       Splitter Ratio: 0.5
     Tree Height: 245
   - Class: rviz/Selection
@@ -33,7 +34,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -215,43 +216,7 @@ Visualization Manager:
       Marker Topic: /obstacle_detector/convex_marker
       Name: MarkerArray
       Namespaces:
-        polytopes_0: true
-        polytopes_1: true
-        polytopes_10: true
-        polytopes_11: true
-        polytopes_12: true
-        polytopes_13: true
-        polytopes_14: true
-        polytopes_15: true
-        polytopes_16: true
-        polytopes_17: true
-        polytopes_18: true
-        polytopes_19: true
-        polytopes_2: true
-        polytopes_20: true
-        polytopes_21: true
-        polytopes_22: true
-        polytopes_23: true
-        polytopes_24: true
-        polytopes_25: true
-        polytopes_26: true
-        polytopes_27: true
-        polytopes_28: true
-        polytopes_29: true
-        polytopes_3: true
-        polytopes_30: true
-        polytopes_31: true
-        polytopes_32: true
-        polytopes_33: true
-        polytopes_34: true
-        polytopes_35: true
-        polytopes_36: true
-        polytopes_4: true
-        polytopes_5: true
-        polytopes_6: true
-        polytopes_7: true
-        polytopes_8: true
-        polytopes_9: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker
@@ -259,7 +224,7 @@ Visualization Manager:
       Marker Topic: /persons
       Name: Marker
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker
@@ -267,7 +232,15 @@ Visualization Manager:
       Marker Topic: /piers
       Name: Marker
       Namespaces:
-        "": true
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /vehicles
+      Name: Marker
+      Namespaces:
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
