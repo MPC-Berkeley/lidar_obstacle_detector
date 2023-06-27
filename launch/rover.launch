@@ -3,6 +3,8 @@
 
   <arg name="use_sensors" default="false" doc="whether to use the onboard sensors or use rosbag"/>
 
+  <arg name="lidar_prefix" default="front_lidar"/>
+
   <include if="$(arg use_sensors)" file="$(find ouster_ros)/launch/sensor.launch">
     <arg name="sensor_hostname" value="192.168.50.13" />
     <arg name="metadata" value="/home/dev/.ros/lidar_metadata.json" />
@@ -22,11 +24,11 @@
     <param name="convex_hull_topic"  value="obstacle_detector/convex_hull"/>
     <param name="convex_marker_topic"  value="obstacle_detector/convex_marker"/>
     <!-- Parameters -->
-    <param name="bbox_target_frame"       value="os_lidar"/>
+    <param name="bbox_target_frame"       value="$(arg lidar_prefix)/os_lidar"/>
   </node>
 
   <node name="safety_checker_node" pkg="lidar_obstacle_detector" type="safety_checker.py" output="screen">
-    <param name="base_frame"   type="string"  value="os_lidar"/>
+    <param name="base_frame"   type="string"  value="$(arg lidar_prefix)/os_lidar"/>
   </node>
 
   <!-- Dynamic Reconfigure GUI -->

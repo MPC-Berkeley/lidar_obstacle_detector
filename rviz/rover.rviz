@@ -14,6 +14,8 @@ Panels:
         - /Marker1
         - /Marker2
         - /Marker3
+        - /Axes2
+        - /Axes3
       Splitter Ratio: 0.5
     Tree Height: 245
   - Class: rviz/Selection
@@ -243,11 +245,25 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.20000000298023224
+      Reference Frame: front_lidar/os_lidar
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.30000001192092896
+      Reference Frame: world
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
     Default Light: true
-    Fixed Frame: os_lidar
+    Fixed Frame: rover
     Frame Rate: 30
   Name: root
   Tools:
