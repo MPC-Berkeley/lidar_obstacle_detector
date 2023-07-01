@@ -110,7 +110,7 @@ class RectangleSafetyChecker(object):
 
             safety_msg = Bool()
             safety_msg.data = is_safe
-            self.safety_pub.publish(safety_msg)
+            # self.safety_pub.publish(safety_msg)
             self.region_pub.publish(polygon_msg)
             self.marker_pub.publish(marker_msg)
 
