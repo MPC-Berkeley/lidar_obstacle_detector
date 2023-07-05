@@ -38,7 +38,7 @@
   <!-- <node ns="/obstacle_detector" pkg="lgsvl_utils" type="detected_objects_visualizer" name="autoware_objects_visualizer" output="log" /> -->
 
   <!-- Rviz -->
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover.rviz" output="log" respawn="true" />
+  <node type="rviz" name="detection_viz" pkg="rviz" args="-d $(find lidar_obstacle_detector)/rviz/rover.rviz" output="log" respawn="true" />
 
   <!-- Camera -->
   <include if="$(arg use_sensors)" file="$(find realsense2_camera)/launch/rs_camera.launch"/>

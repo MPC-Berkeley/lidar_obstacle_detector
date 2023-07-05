@@ -5,7 +5,7 @@ sensor_msgs/PointCloud2 point_cloud
 
 ---
 # Result definition
-lidar_obstacle_detector/LidarBBox[] lidar_bboxes
+jsk_recognition_msgs/BoundingBox[] lidar_bboxes
 
 ---
 # Feedback definition

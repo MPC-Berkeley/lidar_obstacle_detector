@@ -426,7 +426,8 @@ namespace lidar_obstacle_detector
       tf2::doTransform(pose, pose_transformed, transform_stamped);
 
 
-      result_.lidar_bboxes.push_back(lidar_bbox);
+      // result_.lidar_bboxes.push_back(lidar_bbox);
+      result_.lidar_bboxes.push_back(transformJskBbox(box, bbox_header, pose_transformed));
       jsk_bboxes.boxes.emplace_back(transformJskBbox(box, bbox_header, pose_transformed));
       // autoware_objects.objects.emplace_back(transformAutowareObject(box, bbox_header, pose_transformed));
     }

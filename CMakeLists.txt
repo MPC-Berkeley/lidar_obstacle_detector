@@ -90,6 +90,7 @@ add_message_files(
    sensor_msgs
    geometry_msgs
    visualization_msgs
+   jsk_recognition_msgs
  )
 
 ################################################
