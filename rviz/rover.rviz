@@ -17,6 +17,7 @@ Panels:
         - /Axes2
         - /Axes3
         - /Marker4
+        - /Marker5
       Splitter Ratio: 0.5
     Tree Height: 245
   - Class: rviz/Selection
@@ -263,7 +264,13 @@ Visualization Manager:
         polytopes_46: true
         polytopes_47: true
         polytopes_48: true
+        polytopes_49: true
         polytopes_5: true
+        polytopes_50: true
+        polytopes_51: true
+        polytopes_52: true
+        polytopes_53: true
+        polytopes_54: true
         polytopes_6: true
         polytopes_7: true
         polytopes_8: true
@@ -311,6 +318,14 @@ Visualization Manager:
     - Class: rviz/Marker
       Enabled: true
       Marker Topic: /digitalPiers
+      Name: Marker
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /unknownObstacles
       Name: Marker
       Namespaces:
         "": true
