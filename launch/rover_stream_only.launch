@@ -10,7 +10,7 @@
   <arg name="record_name" default="sensor_data" />
 
   <!-- Rover State Transform -->
-  <!-- <node name="rover_state_node" pkg="polaris_interface" type="state_sub_node.py" /> -->
+  <node name="rover_state_node" pkg="polaris_interface" type="state_sub_node.py" />
 
   <!-- Front LiDAR -->
   <group ns="front_lidar">
@@ -21,7 +21,7 @@
       <arg name="viz" value="false" />
       <arg name="tf_prefix" value="front_lidar"/>
     </include>
-    <node name="pointclouds_tf_node" pkg="lidar_obstacle_detector" type="pointclouds_tf_node" />
+    <!-- <node name="pointclouds_tf_node" pkg="lidar_obstacle_detector" type="pointclouds_tf_node" /> -->
   </group>
   <node pkg="tf2_ros" type="static_transform_publisher" name="front_lidar_tf" args="1.8669 0 -0.396850108 1.5708 0 0 rover front_lidar/os_sensor" />
 
